@@ -97,6 +97,12 @@ static NSMutableArray *registeredApps = nil;
     if (self.serviceDescription.locationResponseHeaders)
     {
         NSString *commandPath = [self.serviceDescription.locationResponseHeaders objectForKey:@"Application-URL"];
+        
+        // Fix for Amazon Fire TV Dial where Application-URL ends with / 
+        if([[commandPath substringFromIndex: commandPath.length-1] isEqualToString: @"/"]){
+            commandPath = [commandPath substringToIndex:commandPath.length-1];
+        }
+        
         self.serviceDescription.commandURL = [NSURL URLWithString:commandPath];
     }
     
